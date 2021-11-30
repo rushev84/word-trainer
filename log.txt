@@ -408,6 +408,71 @@ RedBean сам создаёт нужную таблицу (users) и добав�
             die('Incorrect password');
         }
 
+44. Добавляем страницу profile в routes.php:
+Router::page('/profile', 'profile');
+
+45. Открываем сессию в index.php:
+session_start();
+
+46. В profile.php проверяем, существует ли пользователь в сессии. Если нет, редиректимся на логин.:
+if (!$_SESSION["user"])
+    \App\Services\Router::redirect('/login');
+
+    Если да, то выводим инфу о пользователе:
+
+        <div class="jumbotron">
+            <h1 class="display-4">Hello, <?= $_SESSION["user"]["full_name"] ?> </h1>
+            <img src="<?= $_SESSION["user"]["avatar"] ?>" height="300px" alt="">
+        </div>
+
+47. Настраиваем форму в login.php:
+
+    <form class="mt-4" action="/auth/login" method="post">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" id="email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+48. В файле routes.php создаём роут для авторизации (без передачи файлов):
+Router::post('/auth/login', Auth::class, 'login', true);
+
+49. В navbar.php нам нужно убирать кнопки логина и регистрации, а также добавлять ссылки на профиль и выход, если сессия существует. Для этого пишем:
+            <div class="d-flex">
+                <?php
+                if (!$_SESSION["user"]) {
+                    ?>
+                    <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                    <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                    <?php
+                } else {
+                    ?>
+                    <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                    <?php
+                }
+                ?>
+            </div>
+
+50. В login.php и register.php добавляет проверку - если сессия открыта, то редиректимся на profile.
+if ($_SESSION["user"])
+    \App\Services\Router::redirect('/profile');
+
+51. В routes.php добавляем новый роут для логаута:
+Router::post('/auth/logout', Auth::class, 'logout');
+
+52. В navbar.php делаем логаут через кнопку в форме:
+                    <form action="/auth/logout" method="post">
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
+
+
+
 
 
 

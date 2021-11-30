@@ -1,5 +1,8 @@
 <?php
 use App\Services\Page;
+
+if ($_SESSION["user"])
+    \App\Services\Router::redirect('/profile');
 ?>
 
 <!doctype html>

@@ -64,4 +64,9 @@ class Auth
             Router::error(500);
         }
     }
+
+    public function logout(){
+        unset($_SESSION["user"]);
+        Router::redirect('/login');
+    }
 }

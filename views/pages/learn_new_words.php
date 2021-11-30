@@ -1,7 +1,5 @@
 <?php
-
 use App\Services\Page;
-
 ?>
 
 <!doctype html>
@@ -14,7 +12,9 @@ Page::part('header');
 Page::part('navbar');
 ?>
 <div class="container mt-4">
-    <h1>500: Server error</h1>
+    <div class="jumbotron">
+        <h1 class="display-4">Learn new words</h1>
+    </div>
 </div>
 </body>
 </html>
